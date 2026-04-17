@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="mk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DOMINANTI</title>
+  <style>
+    :root{
+      --bg:#950c0c;
+      --text:#f8f4f1;
+      --muted:rgba(248,244,241,.80);
+      --card:rgba(255,255,255,.08);
+      --line:rgba(255,255,255,.14);
+      --shadow:0 20px 60px rgba(0,0,0,.35);
+      --radius:24px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter,Arial,Helvetica,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top right, rgba(255,255,255,.05), transparent 25%),
+        linear-gradient(180deg,#0b0b0d 0%,var(--bg) 45%,#120505 100%);
+      line-height:1.55;
+    }
+    img{max-width:100%;display:block}
+    a{text-decoration:none;color:inherit}
+    .container{width:min(1120px,calc(100% - 32px));margin:0 auto}
+
+    .hero{
+      min-height:100vh;
+      padding:28px 0 60px;
+      display:flex;
+      align-items:center;
+      background:
+        linear-gradient(90deg, rgba(0,0,0,.86) 0%, rgba(0,0,0,.58) 38%, rgba(0,0,0,.20) 100%),
+        url('header.png') center/cover no-repeat;
+      overflow:hidden;
+    }
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:16px;
+      padding-bottom:28px;
+    }
+    .logo{
+      width:220px;
+      max-width:100%;
+      object-fit:contain;
+      filter:drop-shadow(0 8px 30px rgba(0,0,0,.35));
+    }
+    .cta-top{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      background:rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.14);
+      color:#fff;
+      padding:12px 18px;
+      border-radius:999px;
+      font-weight:700;
+      backdrop-filter:blur(10px);
+    }
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.08fr .92fr;
+      gap:42px;
+      align-items:center;
+    }
+    .eyebrow{
+      display:inline-block;
+      padding:8px 14px;
+      background:rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:999px;
+      font-size:14px;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      margin-bottom:16px;
+    }
+    h1{
+      font-size:clamp(40px,7vw,78px);
+      line-height:.95;
+      margin:0 0 16px;
+      letter-spacing:-.04em;
+      max-width:620px;
+    }
+    .hero-copy p{
+      max-width:600px;
+      margin:0 0 28px;
+      font-size:18px;
+      color:var(--muted);
+    }
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:14px;
+      margin-bottom:26px;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:16px 24px;
+      border-radius:16px;
+      font-weight:800;
+      border:1px solid transparent;
+      transition:transform .2s ease;
+      cursor:pointer;
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn-primary{background:#fff;color:#111;box-shadow:var(--shadow)}
+    .btn-secondary{
+      background:rgba(255,255,255,.08);
+      border-color:rgba(255,255,255,.14);
+      color:#fff;
+      backdrop-filter:blur(10px);
+    }
+
+    .hero-points{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:14px;
+      max-width:720px;
+    }
+    .point{
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:20px;
+      padding:16px;
+      backdrop-filter:blur(10px);
+    }
+    .point strong{
+      display:block;
+      font-size:20px;
+      margin-bottom:4px;
+    }
+
+    .hero-product{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+    .product-card{
+      position:relative;
+      width:min(520px,100%);
+      border-radius:32px;
+      padding:28px;
+      background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.06));
+      border:1px solid rgba(255,255,255,.14);
+      backdrop-filter:blur(12px);
+      box-shadow:var(--shadow);
+    }
+    .product-card::before{
+      content:"";
+      position:absolute;
+      inset:auto 10% -30px 10%;
+      height:60px;
+      background:rgba(0,0,0,.45);
+      filter:blur(32px);
+      border-radius:999px;
+      z-index:0;
+    }
+    .product-image{
+      position:relative;
+      z-index:1;
+      width:100%;
+      object-fit:contain;
+    }
+
+    .mobile-logo-only,
+    .mobile-product-hero{display:none}
+
+    section{padding:92px 0}
+    .section-title{
+      font-size:clamp(28px,4vw,48px);
+      line-height:1.02;
+      margin:0 0 14px;
+      letter-spacing:-.03em;
+    }
+    .section-lead{
+      color:var(--muted);
+      max-width:760px;
+      margin:0 0 34px;
+      font-size:18px;
+    }
+
+    .info-grid,
+    .order-wrap,
+    .product-shot{
+      display:grid;
+      gap:28px;
+    }
+    .info-grid{grid-template-columns:1fr 1fr}
+    .order-wrap{grid-template-columns:.95fr 1.05fr;align-items:start}
+    .product-shot{grid-template-columns:1fr 1fr;align-items:center}
+
+    .glass,
+    .price-box{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:28px;
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(10px);
+    }
+    .glass h3{margin-top:0;margin-bottom:16px;font-size:24px}
+    .story{color:var(--muted);font-size:17px}
+    .story strong{color:#fff}
+    .check-list,.form-list{
+      list-style:none;
+      padding:0;
+      margin:0;
+      display:grid;
+      gap:14px;
+    }
+    .check-list li,.form-list li{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      color:var(--muted);
+    }
+    .tick,.dot{
+      width:28px;height:28px;flex:0 0 28px;
+      border-radius:999px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      background:rgba(255,255,255,.12);
+      color:#fff;
+      font-size:14px;
+      font-weight:700;
+      margin-top:1px;
+    }
+
+    .price-box{position:sticky;top:20px}
+    .price-label{
+      font-size:14px;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:rgba(255,255,255,.72);
+      margin-bottom:10px;
+    }
+    .price-value{
+      font-size:clamp(36px,5vw,58px);
+      font-weight:900;
+      letter-spacing:-.04em;
+      margin-bottom:8px;
+    }
+    .price-note{color:var(--muted);margin-bottom:22px}
+    .guarantee{
+      display:grid;
+      gap:12px;
+      margin-top:22px;
+      padding-top:22px;
+      border-top:1px solid rgba(255,255,255,.12);
+      color:var(--muted);
+    }
+
+    .order-form{display:grid;gap:16px}
+    .field{display:grid;gap:8px}
+    .field label{font-weight:700;font-size:14px}
+    .field input,.field textarea{
+      width:100%;
+      padding:15px 16px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.08);
+      color:#fff;
+      outline:none;
+      font:inherit;
+    }
+    .field input::placeholder,.field textarea::placeholder{color:rgba(255,255,255,.45)}
+    .helper{color:rgba(255,255,255,.68);font-size:14px;margin-top:-4px}
+
+    .photo-card{
+      border-radius:28px;
+      overflow:hidden;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow:var(--shadow);
+    }
+    .photo-card img{width:100%;height:100%;object-fit:cover}
+
+    footer{
+      padding:34px 0 48px;
+      color:rgba(255,255,255,.64);
+      border-top:1px solid rgba(255,255,255,.08);
+    }
+
+    @media (max-width:980px){
+      .hero{
+        min-height:auto;
+        padding-top:20px;
+        background-position:right center;
+      }
+      .hero-grid,.info-grid,.order-wrap,.product-shot{grid-template-columns:1fr}
+      .hero-points{grid-template-columns:1fr}
+      .price-box{position:static}
+      .topbar{
+        flex-direction:column;
+        align-items:center;
+        text-align:center;
+      }
+      .hero-copy{text-align:center}
+      .hero-copy p,h1,.section-lead{margin-left:auto;margin-right:auto}
+      .hero-actions{justify-content:center}
+      .hero-product{display:none}
+      .mobile-logo-only,.mobile-product-hero{display:block}
+      .logo{width:130px}
+      .cta-top{width:100%}
+    }
+
+    @media (max-width:640px){
+      .container{width:min(100% - 20px,1120px)}
+      section{padding:70px 0}
+      .hero{
+        padding:18px 0 42px;
+        background:
+          linear-gradient(180deg, rgba(0,0,0,.74) 0%, rgba(0,0,0,.55) 28%, rgba(0,0,0,.18) 100%),
+          url('header.png') center/cover no-repeat;
+      }
+      .topbar{gap:10px;padding-bottom:12px}
+      .logo{width:160px}
+      .cta-top{display:none}
+      .mobile-logo-only img{
+        width:160px;
+        margin:0 auto 14px;
+        object-fit:contain;
+        filter:drop-shadow(0 8px 30px rgba(0,0,0,.35));
+      }
+      .mobile-product-hero .product-card{
+        width:min(250px,100%);
+        margin:0 auto 18px;
+        padding:16px;
+        border-radius:24px;
+      }
+      .glass,.product-card,.price-box{padding:20px;border-radius:22px}
+      .btn{width:100%}
+      .eyebrow{margin-bottom:14px;font-size:13px}
+      h1{font-size:clamp(34px,10vw,52px);line-height:.96;margin-bottom:14px}
+      .hero-copy p,.section-lead,.story{font-size:16px}
+      .hero-copy p{margin-bottom:20px}
+      .hero-actions{gap:12px;margin-bottom:18px}
+      .point{padding:18px;text-align:left}
+      .point strong{font-size:18px}
+    }
+  </style>
+</head>
+<body>
+  <header class="hero" id="top">
+    <div class="container">
+      <div class="topbar">
+        <img class="logo" src="logo.png" alt="DOMINANTI logo" />
+        <a class="cta-top" href="#naracka">Нарачај веднаш</a>
+      </div>
+
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <div class="mobile-logo-only">
+            <img src="logo.png" alt="DOMINANTI logo" />
+          </div>
+
+          <div class="mobile-product-hero">
+            <div class="product-card">
+              <img class="product-image" src="produkti.png" alt="DOMINANTI product" />
+            </div>
+          </div>
+
+          <span class="eyebrow">DOMINANTI • 30% PHEROMONE</span>
+          <h1>100% магнет за секоја жена</h1>
+          <p>Машки парфем со интензивен мирис и 30% феромон, создаден за мажи што сакаат да се чувствуваат посигурно, попривлечно и незаборавно.</p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#naracka">Нарачај сега</a>
+            <a class="btn btn-secondary" href="#produkt">Повеќе за производот</a>
+          </div>
+
+          <div class="hero-points">
+            <div class="point">
+              <strong>30%</strong>
+              <span>Феромон формула</span>
+            </div>
+            <div class="point">
+              <strong>1599 ден</strong>
+              <span>+ 150 ден достава</span>
+            </div>
+            <div class="point">
+              <strong>10 дена</strong>
+              <span>Гаранција за враќање пари</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-product">
+          <div class="product-card">
+            <img class="product-image" src="produkti.png" alt="DOMINANTI product" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="produkt">
+      <div class="container">
+        <h2 class="section-title">Парфем што остава впечаток</h2>
+        <p class="section-lead">DOMINANTI е машки парфем создаден за мажи што сакаат да се чувствуваат посигурно, попривлечно и позабележително. Не е само мирис што убаво мириса — туку присуство што се чувствува.</p>
+
+        <div class="info-grid">
+          <div class="glass story">
+            <h3>За производот</h3>
+            <p><strong>Со ексклузивна формула и 30% феромон</strong>, DOMINANTI создава посилно, помагнетно и позаводливо присуство.</p>
+            <p>Ова е мирис што остава впечаток. Самодоверба што се чувствува. Детал што го прави мажот подоминантен, посекси и позабележителен во секое доближување, средба или излегување.</p>
+            <p>Неговиот мирис е топол, машки и магнетен, создаден за мажи што не сакаат да останат незабележани.</p>
+          </div>
+
+          <div class="glass">
+            <h3>Зошто DOMINANTI прави разлика?</h3>
+            <ul class="check-list">
+              <li><span class="tick">✓</span><span>Содржи <strong>30% феромон</strong></span></li>
+              <li><span class="tick">✓</span><span>Интензивен и привлечен машки мирис</span></li>
+              <li><span class="tick">✓</span><span>Прави да се чувствувате посекси, посигурно и подоминантно</span></li>
+              <li><span class="tick">✓</span><span>Создава посилно присуство и магнетен ефект</span></li>
+              <li><span class="tick">✓</span><span>Остава впечаток што се чувствува и се памети</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="product-shot">
+          <div class="photo-card">
+            <img src="logo.png" alt="DOMINANTI logo detail" />
+          </div>
+
+          <div class="glass">
+            <h3>Употреба</h3>
+            <ul class="form-list">
+              <li><span class="dot">1</span><span>Нанесете на вратот, зглобовите и пулсните точки.</span></li>
+              <li><span class="dot">2</span><span>Ефектот почнува да се чувствува по околу 30 минути и трае неколку часа.</span></li>
+              <li><span class="dot">3</span><span>Повторно нанесете по желба.</span></li>
+            </ul>
+            <p class="section-lead" style="margin-top:20px; margin-bottom:0;">DOMINANTI – за мажот што не прифаќа да остане незабележан. <strong style="color:#fff;">Посекси. Подоминантен. Попривлечен.</strong></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="naracka">
+      <div class="container">
+        <h2 class="section-title">Нарачка</h2>
+        <p class="section-lead">Пополнете ги податоците подолу. По клик на копчето, пораката автоматски ќе се отвори во WhatsApp до вашиот број.</p>
+
+        <div class="order-wrap">
+          <div class="price-box">
+            <div class="price-label">Цена</div>
+            <div class="price-value">1599 ден</div>
+            <div class="price-note">+ 150 ден достава</div>
+            <a class="btn btn-primary" href="#orderForm">Пополнете нарачка</a>
+
+            <div class="guarantee">
+              <strong style="color:#fff; font-size:18px;">Гаранција за враќање на пари</strong>
+              <span>Доколку во рок од 10 дена не го добиете посакуваниот ефект, парите ви ги враќаме назад, а производот останува кај вас.</span>
+            </div>
+          </div>
+
+          <div class="glass">
+            <h3>За нарачка, испратете ни:</h3>
+            <form id="orderForm" class="order-form">
+              <div class="field">
+                <label for="name">Име и Презиме</label>
+                <input id="name" name="name" type="text" placeholder="Внесете име и презиме" required />
+              </div>
+              <div class="field">
+                <label for="phone">Телефонски број</label>
+                <input id="phone" name="phone" type="tel" placeholder="Пример: 07x xxx xxx" required />
+              </div>
+              <div class="field">
+                <label for="address">Адреса</label>
+                <input id="address" name="address" type="text" placeholder="Улица и број" required />
+              </div>
+              <div class="field">
+                <label for="city">Град</label>
+                <input id="city" name="city" type="text" placeholder="Внесете град" required />
+              </div>
+              <div class="field">
+                <label for="note">Дополнителна порака</label>
+                <textarea id="note" name="note" rows="4" placeholder="По желба..."></textarea>
+              </div>
+              <div class="helper">WhatsApp број за прием: +389 78 512 651</div>
+              <button type="submit" class="btn btn-primary">Испрати на WhatsApp</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">DOMINANTI • 30% pheromone • Single product landing page</div>
+  </footer>
+
+  <script>
+    const form = document.getElementById('orderForm');
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const address = document.getElementById('address').value.trim();
+      const city = document.getElementById('city').value.trim();
+      const note = document.getElementById('note').value.trim();
+
+      const message =
+        `За нарачка:%0AИме и Презиме: ${encodeURIComponent(name)}` +
+        `%0AТелефонски број: ${encodeURIComponent(phone)}` +
+        `%0AАдреса: ${encodeURIComponent(address)}` +
+        `%0AГрад: ${encodeURIComponent(city)}` +
+        `${note ? `%0AДополнително: ${encodeURIComponent(note)}` : ''}` +
+        `%0A%0AПроизвод: DOMINANTI%0AЦена: 1599 ден + 150 ден достава`;
+
+      const whatsappURL = `https://wa.me/38978512651?text=${message}`;
+      window.open(whatsappURL, '_blank');
+    });
+  </script>
+</body>
+</html>

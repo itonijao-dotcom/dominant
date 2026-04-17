@@ -1,0 +1,1 @@
+DOMINANTI mobile-fixed landing page\nOpen index.html in browser or upload whole folder to hosting.\nWhatsApp orders go to +389 78 512 651\n
